@@ -11,7 +11,7 @@ package Objects;
  */
 public class Books {
 
-    private int BookID;
+    private String BookID;
     private String Title;
     private String AuthorName;
     private Categories Category;
@@ -23,7 +23,7 @@ public class Books {
 
     }
 
-    public Books(int BookID, String Title, String AuthorName, Categories Category, Publishers Publisher, int NumberOfCopy, String Description) {
+    public Books(String BookID, String Title, String AuthorName, Categories Category, Publishers Publisher, int NumberOfCopy, String Description) {
         this.BookID = BookID;
         this.Title = Title;
         this.AuthorName = AuthorName;
@@ -33,11 +33,11 @@ public class Books {
         this.Description = Description;
     }
 
-    public int getBookID() {
+    public String getBookID() {
         return BookID;
     }
 
-    public void setBookID(int BookID) {
+    public void setBookID(String BookID) {
         this.BookID = BookID;
     }
 

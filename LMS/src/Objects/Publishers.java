@@ -11,23 +11,23 @@ package Objects;
  */
 public class Publishers {
 
-    private int PubID;
+    private String PubID;
     private String PubName;
 
     public Publishers() {
 
     }
 
-    public Publishers(int PubID, String PubName) {
+    public Publishers(String PubID, String PubName) {
         this.PubID = PubID;
         this.PubName = PubName;
     }
 
-    public int getPubID() {
+    public String getPubID() {
         return PubID;
     }
 
-    public void setPubID(int PubID) {
+    public void setPubID(String PubID) {
         this.PubID = PubID;
     }
 

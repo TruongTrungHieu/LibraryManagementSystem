@@ -5,6 +5,7 @@
  */
 package DatabaseWorker;
 
+import Support.Global;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,11 +20,14 @@ public class SQLServerConnUtils_SQLJDBC {
     // (Sử dụng thư viện điều khiển SQLJDBC)
     public static Connection getSQLServerConnection()
             throws SQLException, ClassNotFoundException {
-        String hostName = "localhost";
-        String sqlInstanceName = "SQLEXPRESS";
-        String database = "simplehr";
-        String userName = "sa";
-        String password = "1234";
+        if (Global.DatabaseProperty.getHostName().isEmpty()) {
+            return null;
+        }
+        String hostName = Global.DatabaseProperty.getHostName();
+        String sqlInstanceName = Global.DatabaseProperty.getSqlInstanceName();
+        String database = Global.DatabaseProperty.getDatabase();
+        String userName = Global.DatabaseProperty.getUserName();
+        String password = Global.DatabaseProperty.getPassword();
 
         return getSQLServerConnection(hostName, sqlInstanceName,
                 database, userName, password);

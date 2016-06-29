@@ -12,7 +12,7 @@ import java.util.Date;
  * @author ELC-17
  */
 public class Issue {
-    private int IssueID;
+    private String IssueID;
     private Readers Reader;
     private Employees Employee;
     private Date IssueDate;
@@ -25,7 +25,7 @@ public class Issue {
         
     }
 
-    public Issue(int IssueID, Readers Reader, Employees Employee, Date IssueDate, Date DueDate, Date ReturnDate, double TotalFine, int Status) {
+    public Issue(String IssueID, Readers Reader, Employees Employee, Date IssueDate, Date DueDate, Date ReturnDate, double TotalFine, int Status) {
         this.IssueID = IssueID;
         this.Reader = Reader;
         this.Employee = Employee;
@@ -36,11 +36,11 @@ public class Issue {
         this.Status = Status;
     }
 
-    public int getIssueID() {
+    public String getIssueID() {
         return IssueID;
     }
 
-    public void setIssueID(int IssueID) {
+    public void setIssueID(String IssueID) {
         this.IssueID = IssueID;
     }
 

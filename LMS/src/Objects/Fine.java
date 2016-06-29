@@ -11,25 +11,27 @@ package Objects;
  */
 public class Fine {
 
-    private int FineID;
+    private String FineID;
     private String FineName;
+    private String Description;
     private double Cost;
 
     public Fine() {
 
     }
 
-    public Fine(int FineID, String FineName, double Cost) {
+    public Fine(String FineID, String FineName, String Description, double Cost) {
         this.FineID = FineID;
         this.FineName = FineName;
+        this.Description = Description;
         this.Cost = Cost;
     }
 
-    public int getFineID() {
+    public String getFineID() {
         return FineID;
     }
 
-    public void setFineID(int FineID) {
+    public void setFineID(String FineID) {
         this.FineID = FineID;
     }
 
@@ -47,6 +49,14 @@ public class Fine {
 
     public void setCost(double Cost) {
         this.Cost = Cost;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String Description) {
+        this.Description = Description;
     }
 
 }

@@ -1,0 +1,5 @@
+localhost
+ELC17\SQLEXPRESS
+QLTV
+sa
+123456gf

@@ -11,23 +11,23 @@ package Objects;
  */
 public class Categories {
 
-    private int CateID;
+    private String CateID;
     private String CateName;
 
     public Categories() {
 
     }
 
-    public Categories(int CateID, String CateName) {
+    public Categories(String CateID, String CateName) {
         this.CateID = CateID;
         this.CateName = CateName;
     }
 
-    public int getCateID() {
+    public String getCateID() {
         return CateID;
     }
 
-    public void setCateID(int CateID) {
+    public void setCateID(String CateID) {
         this.CateID = CateID;
     }
 

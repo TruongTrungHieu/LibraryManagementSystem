@@ -11,20 +11,19 @@ package Objects;
  */
 public class Employees {
 
-    private int EmployeeID;
+    private String EmployeeID;
     private String EmployeeName;
     private String Address;
     private String PhoneNumber;
     private String Email;
     private Permission Permission;
     private String Username;
-    private String Password;
 
     public Employees() {
 
     }
 
-    public Employees(int EmployeeID, String EmployeeName, String Address, String PhoneNumber, String Email, Permission Permission, String Username, String Password) {
+    public Employees(String EmployeeID, String EmployeeName, String Address, String PhoneNumber, String Email, Permission Permission, String Username) {
         this.EmployeeID = EmployeeID;
         this.EmployeeName = EmployeeName;
         this.Address = Address;
@@ -32,14 +31,13 @@ public class Employees {
         this.Email = Email;
         this.Permission = Permission;
         this.Username = Username;
-        this.Password = Password;
     }
 
-    public int getEmployeeID() {
+    public String getEmployeeID() {
         return EmployeeID;
     }
 
-    public void setEmployeeID(int EmployeeID) {
+    public void setEmployeeID(String EmployeeID) {
         this.EmployeeID = EmployeeID;
     }
 
@@ -90,13 +88,4 @@ public class Employees {
     public void setUsername(String Username) {
         this.Username = Username;
     }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String Password) {
-        this.Password = Password;
-    }
-
 }

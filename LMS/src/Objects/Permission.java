@@ -11,23 +11,23 @@ package Objects;
  */
 public class Permission {
 
-    private int PermissionID;
+    private String PermissionID;
     private String PermissionName;
 
     public Permission() {
 
     }
 
-    public Permission(int PermissionID, String PermissionName) {
+    public Permission(String PermissionID, String PermissionName) {
         this.PermissionID = PermissionID;
         this.PermissionName = PermissionName;
     }
 
-    public int getPermissionID() {
+    public String getPermissionID() {
         return PermissionID;
     }
 
-    public void setPermissionID(int PermissionID) {
+    public void setPermissionID(String PermissionID) {
         this.PermissionID = PermissionID;
     }
 

@@ -11,29 +11,27 @@ package Objects;
  */
 public class Readers {
 
-    private int ReaderID;
+    private String ReaderID;
     private String ReaderName;
     private String PhoneNumber;
     private String UserName;
-    private String Password;
 
     public Readers() {
 
     }
 
-    public Readers(int ReaderID, String ReaderName, String PhoneNumber, String UserName, String Password) {
+    public Readers(String ReaderID, String ReaderName, String PhoneNumber, String UserName) {
         this.ReaderID = ReaderID;
         this.ReaderName = ReaderName;
         this.PhoneNumber = PhoneNumber;
         this.UserName = UserName;
-        this.Password = Password;
     }
 
-    public int getReaderID() {
+    public String getReaderID() {
         return ReaderID;
     }
 
-    public void setReaderID(int ReaderID) {
+    public void setReaderID(String ReaderID) {
         this.ReaderID = ReaderID;
     }
 
@@ -60,13 +58,4 @@ public class Readers {
     public void setUserName(String UserName) {
         this.UserName = UserName;
     }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String Password) {
-        this.Password = Password;
-    }
-
 }
