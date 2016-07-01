@@ -7,7 +7,7 @@ package DatabaseWorker;
 
 /**
  *
- * @author ELC-17
+ * @author 
  */
 public class DatabaseProperty {
 
@@ -18,11 +18,11 @@ public class DatabaseProperty {
     private String password;
 
     public DatabaseProperty() {
-        this.hostName = "localhost";
-        this.sqlInstanceName = "ELC17\\SQLEXPRESS";
-        this.database = "QLTV";
-        this.userName = "sa";
-        this.password = "123456";
+//        this.hostName = "localhost";
+//        this.sqlInstanceName = "ELC17\\SQLEXPRESS";
+//        this.database = "QLTV";
+//        this.userName = "sa";
+//        this.password = "123456";
     }
 
     public DatabaseProperty(String hostName, String sqlInstanceName, String database, String userName, String password) {

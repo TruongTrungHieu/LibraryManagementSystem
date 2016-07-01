@@ -133,3 +133,20 @@ INSERT INTO Reader VALUES ('reader1', N'Cảnh Cảnh', '0986523521', 'reader1',
 INSERT INTO Reader VALUES ('reader2', N'Sieeu nhaan', '0986523521', 'reader2', '123456')
 INSERT INTO Reader VALUES ('reader2', N'Sieeu nhaan', '0986523521', 'reader2')
 SELECT ReaderID, ReaderName, PhoneNumber, UserName  FROM Reader
+
+SELECT * FROM Employees
+
+INSERT INTO Categories VALUES ('cat1', N'Ngôn tình')
+INSERT INTO Categories VALUES ('cat2', N'Truyện cổ tích')
+
+INSERT INTO Publishers VALUES ('pub1', N'Nhà xuất bản Giáo dục')
+INSERT INTO Publishers VALUES ('pub2', N'Nhà xuất bản Tuổi trẻ')
+
+INSERT INTO Books VALUES ('book1', N'Thất tịch không mưa', N'Lâu Vũ Tình', 'cat1', 'pub1', 20, N'Từ nhỏ cô đã thầm yêu anh, như số kiếp không thể thay đổi
+Tình  yêu trong sáng ấy, như lần đầu được nếm mùi vị của quả khế mới chín.
+Sau đó cô và anh xa nhau, gặp lại đều cách nhau ba năm.')
+
+INSERT INTO Books VALUES ('book2', N'Clean Code: A Handbook of Agile Software Craftsmanship', N'Robert C. Martin', 'cat1', 'pub2', 20, 'Even bad code can function. But if code is not clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. But it does not have to be that way.')
+
+INSERT INTO Books VALUES ('book3', N'Da Vinci code', N'Dan Brown', 'cat2', 'pub1', 5, 'Simbolog Robert Langdon menerima telepon misterius yang mengundangnya ke Museum Louvre Paris pada tengah malam.')
+

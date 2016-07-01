@@ -7,15 +7,21 @@ package DatabaseWorker;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author TRUNGHIEU
+ * @author
  */
 public class ConnectionUtils {
 
-    public static Connection getMyConnection() throws SQLException,
-            ClassNotFoundException {
-        return SQLServerConnUtils_SQLJDBC.getSQLServerConnection();
+    public static Connection getMyConnection() {
+        try {
+            return SQLServerConnUtils_SQLJDBC.getSQLServerConnection();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(ConnectionUtils.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 }

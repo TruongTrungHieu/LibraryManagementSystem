@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author TRUNGHIEU
+ * @author 
  */
 public class SQLServerConnUtils_SQLJDBC {
 
