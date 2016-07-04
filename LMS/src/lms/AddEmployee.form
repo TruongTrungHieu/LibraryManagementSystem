@@ -63,11 +63,11 @@
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jLabel1" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="0" min="-2" pref="77" max="-2" attributes="0"/>
-                      <Component id="jLabel3" alignment="0" pref="102" max="32767" attributes="0"/>
+                      <Component id="jLabel3" alignment="0" pref="0" max="32767" attributes="0"/>
                       <Component id="jLabel4" alignment="0" min="-2" pref="60" max="-2" attributes="1"/>
                       <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="bt_Add2" alignment="0" max="32767" attributes="0"/>
+                      <Component id="bt_add_emp" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="21" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -81,7 +81,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="bt_Add3" min="-2" pref="101" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="cb_per" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
               </Group>
@@ -113,7 +113,7 @@
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cb_per" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -121,10 +121,12 @@
                       <Component id="txt_username" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="bt_Add2" alignment="3" pref="0" max="32767" attributes="0"/>
-                      <Component id="bt_Add1" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="bt_Add3" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="bt_add_emp" alignment="3" pref="0" max="32767" attributes="0"/>
+                          <Component id="bt_Add1" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
@@ -236,7 +238,7 @@
             <Property name="text" type="java.lang.String" value="Reset"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="bt_Add2">
+        <Component class="javax.swing.JButton" name="bt_add_emp">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Bodoni MT" size="14" style="1"/>
@@ -250,7 +252,7 @@
             <Property name="text" type="java.lang.String" value="Add"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_Add2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_add_empActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bt_Add3">
@@ -270,15 +272,10 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_Add3ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="cb_per">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Library Clerk"/>
-                <StringItem index="1" value="Library Assistant"/>
-                <StringItem index="2" value="Accounting"/>
-                <StringItem index="3" value="Stock Manager"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <AuxValues>

@@ -6,8 +6,13 @@
 
 package lms;
 
+import DatabaseWorker.ExecuteQuery;
+import Objects.Permission;
+import Objects.Publishers;
+import Support.SQLFileConfigHanlder;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,14 +23,17 @@ import javax.swing.table.DefaultTableModel;
 public class AddPulisher extends javax.swing.JFrame {
     ManagerPublisher mp;
     DefaultTableModel d;
+    private Publishers publisher;
+    private ExecuteQuery exeQ;
+    private ArrayList<Publishers> listPublishers;
+    
     /** Creates new form ManagePulisher */
     public AddPulisher(ManagerPublisher mp) {
-        this.mp=mp;
-        initComponents();
-      //  LookandFeels.setLookAndFeelAt(new WindowsLookAndFeel(), this);
-          this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        Dimension ds= Toolkit.getDefaultToolkit().getScreenSize();
-                this.setLocation((ds.width-this.getWidth())/2, (ds.height-this.getHeight())/2);
+       initComponents();
+        boolean readConfigFile = SQLFileConfigHanlder.readConfigFile();
+
+        initData();
+        loadView();
     }
 
     /** This method is called from within the constructor to
@@ -190,5 +198,13 @@ this.dispose();
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField txt_name;
     // End of variables declaration//GEN-END:variables
+
+    private void initData() {
+
+    }
+
+    private void loadView() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

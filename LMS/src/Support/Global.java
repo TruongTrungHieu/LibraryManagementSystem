@@ -33,4 +33,12 @@ public class Global {
      *  Account type
      */
     public static boolean isEmployee = true;
+    /**
+     *  Đang mượn
+     */
+    public static final int ISSUE_STATUS_PENDING = 1;
+    /**
+     *  Đã trả
+     */
+    public static final int ISSUE_STATUS_DONE = 2;
 }

@@ -15,7 +15,8 @@ import java.util.Date;
  */
 public class DatetimeUtils {
 
-    public static final String DATE_FORMAT_1 = "";
+    public static final String DATE_FORMAT_SQL = "yyyy-MM-dd hh:mm:ss";
+    public static final String DATE_FORMAT_2 = "dd/MM/yyyy";
 
     public static String convertDateToString(Date date, String format) {
         if (date != null) {
@@ -39,4 +40,18 @@ public class DatetimeUtils {
         }
     }
 
+    public static Date convertStringToDate(String dateString, String format) {
+        if (!dateString.isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat(format);
+            try {
+                Date date = formatter.parse(dateString);
+                return date;
+            } catch (ParseException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
 }

@@ -36,7 +36,6 @@ public class Searchbook extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((ds.width - this.getWidth()) / 2, (ds.height - this.getHeight()) / 2);
-        
         initData();
         loadView();
     }
@@ -57,7 +56,7 @@ public class Searchbook extends javax.swing.JFrame {
     private void loadView() {
         if (listBook != null) {
             DefaultTableModel model;
-            model = (DefaultTableModel)this.tb_books.getModel();
+            model = (DefaultTableModel) this.tb_books.getModel();
             listBook.stream().forEach((b) -> {
                 model.addRow(new Object[]{b.getTitle(), b.getAuthorName(), b.getCategory().getCateName(), b.getPublisher().getPubName(), b.getNumberOfCopy()});
             });
@@ -257,6 +256,17 @@ public class Searchbook extends javax.swing.JFrame {
 
     private void btn_search_bookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_bookActionPerformed
         // TODO add your handling code here:
+        ArrayList<Books> listSearchBook = new ArrayList<>();
+//        listSearchBook = exeQ.
+        tb_books = new JTable();
+        if (listSearchBook != null) {
+            DefaultTableModel model;
+            model = (DefaultTableModel) this.tb_books.getModel();
+            listSearchBook.stream().forEach((b) -> {
+                model.addRow(new Object[]{b.getTitle(), b.getAuthorName(), b.getCategory().getCateName(), b.getPublisher().getPubName(), b.getNumberOfCopy()});
+            });
+            tb_books = new JTable(model);
+        }
     }//GEN-LAST:event_btn_search_bookActionPerformed
 
     private void btn_display_all_bookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_display_all_bookActionPerformed
@@ -264,7 +274,7 @@ public class Searchbook extends javax.swing.JFrame {
         tb_books = new JTable();
         if (listBook != null) {
             DefaultTableModel model;
-            model = (DefaultTableModel)this.tb_books.getModel();
+            model = (DefaultTableModel) this.tb_books.getModel();
             listBook.stream().forEach((b) -> {
                 model.addRow(new Object[]{b.getTitle(), b.getAuthorName(), b.getCategory().getCateName(), b.getPublisher().getPubName(), b.getNumberOfCopy()});
             });

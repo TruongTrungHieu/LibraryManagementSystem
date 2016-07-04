@@ -10,6 +10,7 @@ import Objects.Categories;
 import Objects.Employees;
 import Objects.Fine;
 import Objects.Issue;
+import Objects.IssueDetail;
 import Objects.Permission;
 import Objects.Publishers;
 import Objects.Readers;
@@ -185,6 +186,17 @@ public class ExecuteQuery {
         }
     }
 
+    public boolean insertEmployee(Employees emp) {
+        String ins_emp = "INSERT INTO Employees VALUES ('" + emp.getEmployeeID() + "', N'" + emp.getEmployeeName() + "', '" + emp.getAddress() + "', '" + emp.getPhoneNumber() + "', '" + emp.getEmail() + "', '" + emp.getPermission().getPermissionID() + "', '" + emp.getUsername() + "', '123456')";
+        try {
+            int row_affected = _statement.executeUpdate(ins_emp);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("insertBook:" + e.getMessage());
+            return false;
+        }
+    }
+
     /**
      * Fine
      */
@@ -273,7 +285,29 @@ public class ExecuteQuery {
 
     /**
      * Issue Detail
+     *
+     * @param issue
+     * @param listDetail
+     * @return
      */
+    public boolean insertIssueAndDetail(Issue issue, ArrayList<IssueDetail> listDetail) {
+        String ins_issue = "INSERT INTO Issue VALUES ('" + issue.getIssueID() + "', '" + issue.getReader().getReaderID() + "', '" + issue.getEmployee().getEmployeeID() + "', '" + DatetimeUtils.convertDateToString(issue.getIssueDate(), DatetimeUtils.DATE_FORMAT_SQL) + "', '" + DatetimeUtils.convertDateToString(issue.getDueDate(), DatetimeUtils.DATE_FORMAT_SQL) + "', '', " + issue.getTotalFine() + ", " + issue.getStatus() + ")";
+        try {
+            int row_affected = _statement.executeUpdate(ins_issue);
+            if (row_affected != 0) {
+                for (IssueDetail issueDetail : listDetail) {
+                    String ins_detail = "INSERT INTO Issue_detail VALUES ('" + issue.getIssueID() + "', '" + issueDetail.getBook().getBookID() + "', '1', " + issueDetail.getNumber() + ")";
+                    int row_detail_affected = _statement.executeUpdate(ins_detail);
+                }
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("insertIssueAndDetail:" + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Permission
      */

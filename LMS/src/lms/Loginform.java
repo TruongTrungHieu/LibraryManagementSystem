@@ -38,17 +38,20 @@ public class Loginform extends javax.swing.JFrame {
             Connection con = ConnectionUtils.getMyConnection();
             if (con == null) {
                 new DatabaseConnect().setVisible(true);
-            } 
+            }
         } else {
             new DatabaseConnect().setVisible(true);
         }
-        
+
     }
 
     private boolean checklogin() {
         username = txt_user.getText().trim();
         pass = new String(txt_pass.getPassword());
-        
+
+        username = "admin";
+        pass = "123456";
+
         if (username.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Username can't be empty !");
             return false;
@@ -201,13 +204,17 @@ public class Loginform extends javax.swing.JFrame {
 
     private void bt_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_loginActionPerformed
         // TODO add your handling code here:
+
         exeQ = ExecuteQuery.getInstance();
         if (checklogin()) {
             switch (type_user) {
                 case type_user_admin:
                 case type_user_employee:
                     if (exeQ.loginEmployee(username, pass)) {
-                        new FrameMain().setVisible(true);
+//                        new MainFrame1().setVisible(true);
+//new AddEmployee().setVisible(true);
+                        new Manager_Issue().setVisible(true);
+
                         this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "The email and password you entered don't match.");
@@ -215,7 +222,7 @@ public class Loginform extends javax.swing.JFrame {
                     break;
                 case type_user_student:
                     if (exeQ.loginReader(username, pass)) {
-                        new FrameMain().setVisible(true);
+                        new Searchbook().setVisible(true);
                         this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "The email and password you entered don't match.");

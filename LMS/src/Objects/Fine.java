@@ -11,6 +11,12 @@ package Objects;
  */
 public class Fine {
 
+    /**
+     * 1 - Bình thường
+     * 2 - ...
+     * 3 - ...
+     */
+    
     private String FineID;
     private String FineName;
     private String Description;
