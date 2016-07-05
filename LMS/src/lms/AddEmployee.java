@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
  */
 public class AddEmployee extends javax.swing.JFrame {
 
-    ManagerEmployee me;
+   // ManagerEmployee me;
     DefaultComboBoxModel dcbm;
     private Employees employee;
     private ExecuteQuery exeQ;

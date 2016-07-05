@@ -219,7 +219,6 @@
     <Component class="javax.swing.JTextField" name="tf_employeeName">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btn_create_issue">

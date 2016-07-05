@@ -164,7 +164,6 @@ public class Manager_Issue extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tbl_issuedetail);
 
         tf_employeeName.setEditable(false);
-        tf_employeeName.setText("jTextField1");
 
         btn_create_issue.setText("Create");
         btn_create_issue.addActionListener(new java.awt.event.ActionListener() {
@@ -358,7 +357,7 @@ public class Manager_Issue extends javax.swing.JFrame {
 
         issue.setIssueID(Calendar.getInstance().getTimeInMillis() + "");
         issue.setIssueDate(new Date());
-        issue.setStatus(Global.ISSUE_STATUS_PENDING);
+        issue.setStatus(Global.ISSUE_STATUS_BORROWING);
         issue.setTotalFine(0);
 
         if (tf_dueDate.getText().isEmpty() || tf_dueDate.getText().equals("dd/MM/yyyy")) {

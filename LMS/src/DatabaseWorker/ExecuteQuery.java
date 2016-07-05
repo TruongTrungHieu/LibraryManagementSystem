@@ -64,7 +64,8 @@ public class ExecuteQuery {
         ArrayList<Books> listBook = new ArrayList<>();
         String sel_all_book = "SELECT BookID, Title, AuthorName, Books.CategoryID, Categories.CateName, Books.PublisherID, Publishers.PubName, Numberofcopies, [Description] "
                 + "FROM Books INNER JOIN Categories ON Books.CategoryID = Categories.CateID "
-                + "INNER JOIN Publishers ON Books.PublisherID = Publishers.PubID";
+                + "INNER JOIN Publishers ON Books.PublisherID = Publishers.PubID "
+                + "ORDER BY Title";
         try {
             ResultSet rs = _statement.executeQuery(sel_all_book);
             if (rs.first()) {
@@ -105,12 +106,29 @@ public class ExecuteQuery {
      * @return
      */
     public boolean insertBook(Books book) {
-        String ins_reader = "INSERT INTO Books VALUES ('" + book.getBookID() + "', N'" + book.getTitle() + "', N'" + book.getAuthorName() + "', '" + book.getCategory().getCateID() + "', '" + book.getPublisher().getPubID() + "', " + book.getNumberOfCopy() + ", N'" + book.getDescription() + "')";
+        String ins_book = "INSERT INTO Books VALUES ('" + book.getBookID() + "', N'" + book.getTitle() + "', N'" + book.getAuthorName() + "', '" + book.getCategory().getCateID() + "', '" + book.getPublisher().getPubID() + "', " + book.getNumberOfCopy() + ", N'" + book.getDescription() + "')";
         try {
-            int row_affected = _statement.executeUpdate(ins_reader);
+            int row_affected = _statement.executeUpdate(ins_book);
             return row_affected != 0;
         } catch (Exception e) {
             System.out.println("insertBook:" + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Update single book
+     *
+     * @param book
+     * @return
+     */
+    public boolean updateBook(Books book) {
+        String upd_book = "UPDATE Books SET Title = N'" + book.getTitle() + "', AuthorName = N'" + book.getAuthorName() + "', CategoryID = '" + book.getCategory().getCateID() + "', PublisherID = '" + book.getPublisher().getPubID() + "', Numberofcopies = " + book.getNumberOfCopy() + ", Description = N'" + book.getDescription() + "' WHERE BookID = '" + book.getBookID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_book);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updateBook:" + e.getMessage());
             return false;
         }
     }
@@ -123,6 +141,17 @@ public class ExecuteQuery {
      *
      * @return
      */
+    public boolean insertCate(Categories cate) {
+        String ins_reader = "INSERT INTO Categories VALUES ('" + cate.getCateID() + "', N'" + cate.getCateName() + "')";
+        try {
+            int row_affected = _statement.executeUpdate(ins_reader);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("insertCate:" + e.getMessage());
+            return false;
+        }
+    }
+
     public ArrayList<Categories> getAllCategories() {
         ArrayList<Categories> listCategory = new ArrayList<>();
         String sel_all_category = "SELECT CateID, CateName FROM Categories";
@@ -240,8 +269,8 @@ public class ExecuteQuery {
     public ArrayList<Issue> getAllIssue() {
         ArrayList<Issue> listIssue = new ArrayList<>();
         String sel_all_issue = "SELECT Issue.IssueID, Issue.ReaderID, Reader.ReaderName, Reader.PhoneNumber, Issue.EmployeeID, Employees.Emp_name, Employees.Address, Employees.PhoneNumber, Employees.Email, Employees.PerID, Issue.IssueDate, Issue.DueDate, Issue.ReturnDate, Issue.TotalFine, Issue.Status "
-                + "FROM Issue INNER JOIN Employees ON Issue.EmployeesID = Employees.EmployeeID "
-                + "INNER JOIN Reader ON Issue.Employees.ReaderID = Reader.ReaderID";
+                + "FROM Issue INNER JOIN Employees ON Issue.EmployeeID = Employees.EmployeeID "
+                + "INNER JOIN Reader ON Issue.ReaderID = Reader.ReaderID";
         try {
             ResultSet rs = _statement.executeQuery(sel_all_issue);
             if (rs.first()) {
@@ -284,8 +313,102 @@ public class ExecuteQuery {
     }
 
     /**
-     * Issue Detail
+     * Select all from Issue by Status
      *
+     * @return
+     */
+    public ArrayList<Issue> getAllIssue(int status) {
+        ArrayList<Issue> listIssue = new ArrayList<>();
+        String sel_all_issue = "SELECT Issue.IssueID, Issue.ReaderID, Reader.ReaderName, Reader.PhoneNumber, Issue.EmployeeID, Employees.Emp_name, Employees.Address, Employees.PhoneNumber, Employees.Email, Employees.PerID, Issue.IssueDate, Issue.DueDate, Issue.ReturnDate, Issue.TotalFine, Issue.Status "
+                + "FROM Issue INNER JOIN Employees ON Issue.EmployeeID = Employees.EmployeeID "
+                + "INNER JOIN Reader ON Issue.ReaderID = Reader.ReaderID "
+                + "WHERE Issue.Status = " + status;
+        try {
+            ResultSet rs = _statement.executeQuery(sel_all_issue);
+            if (rs.first()) {
+                do {
+                    Issue issue = new Issue();
+
+                    issue.setIssueID(rs.getString(1));
+
+                    Readers reader = new Readers();
+                    reader.setReaderID(rs.getString(2));
+                    reader.setReaderName(rs.getString(3));
+                    reader.setPhoneNumber(rs.getString(4));
+                    issue.setReader(reader);
+
+                    Employees employees = new Employees();
+                    employees.setEmployeeID(rs.getString(5));
+                    employees.setEmployeeName(rs.getString(6));
+                    employees.setAddress(rs.getString(7));
+                    employees.setPhoneNumber(rs.getString(8));
+                    employees.setEmail(rs.getString(9));
+                    Permission permission = new Permission();
+                    permission.setPermissionID(rs.getString(10));
+                    employees.setPermission(permission);
+                    issue.setEmployee(employees);
+
+                    issue.setIssueDate(DatetimeUtils.convertStringToDate(rs.getString(11)));
+                    issue.setDueDate(DatetimeUtils.convertStringToDate(rs.getString(12)));
+                    issue.setReturnDate(DatetimeUtils.convertStringToDate(rs.getString(13)));
+                    issue.setTotalFine(rs.getDouble(14));
+                    issue.setStatus(rs.getInt(15));
+
+                    listIssue.add(issue);
+                } while (rs.next());
+            }
+            return listIssue;
+        } catch (Exception e) {
+            System.out.println("getAllIssue_status:" + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Issue Detail
+     * @param issueID
+     * @return 
+     */
+    public ArrayList<IssueDetail> getAllIssueDetail(String issueID) {
+        ArrayList<IssueDetail> list = new ArrayList<>();
+        String sel_issue_detail = "SELECT IssueID, Issue_detail.BookID, Books.Title, Issue_detail.FineID, Fine.FineName, Fine.Cost, Number "
+                + "FROM Issue_detail INNER JOIN Books ON Issue_detail.BookID = Books.BookID "
+                + "INNER JOIN Fine ON Issue_detail.FineID = Fine.FineID "
+                + "WHERE IssueID = '" + issueID + "'";
+        try {
+            ResultSet rs = _statement.executeQuery(sel_issue_detail);
+            if (rs.first()) {
+                do {
+                    IssueDetail id = new IssueDetail();
+
+                    Issue issue = new Issue();
+                    issue.setIssueID(rs.getString(1));
+                    id.setIssue(issue);
+
+                    Books b = new Books();
+                    b.setBookID(rs.getString(2));
+                    b.setTitle(rs.getString(3));
+                    id.setBook(b);
+
+                    Fine f = new Fine();
+                    f.setFineID(rs.getString(4));
+                    f.setFineName(rs.getString(5));
+                    f.setCost(rs.getDouble(6));
+                    id.setFine(f);
+
+                    id.setNumber(rs.getInt(7));
+
+                    list.add(id);
+                } while (rs.next());
+            }
+            return list;
+        } catch (Exception e) {
+            System.out.println("getAllIssue_status:" + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
      * @param issue
      * @param listDetail
      * @return
@@ -346,6 +469,17 @@ public class ExecuteQuery {
      *
      * @return
      */
+    public boolean insertPub(Publishers pub) {
+        String ins_pub = "INSERT INTO Publishers VALUES ('" + pub.getPubID() + "', N'" + pub.getPubName() + "')";
+        try {
+            int row_affected = _statement.executeUpdate(ins_pub);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("insertPub:" + e.getMessage());
+            return false;
+        }
+    }
+
     public ArrayList<Publishers> getAllPublisher() {
         ArrayList<Publishers> listPublisher = new ArrayList<>();
         String sel_all_publishers = "SELECT PubID, PubName FROM Publishers";

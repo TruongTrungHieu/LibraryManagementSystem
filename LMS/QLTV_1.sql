@@ -127,6 +127,7 @@ ALTER TABLE Reader
 -- INSERT
 -- Permission
 INSERT INTO Permission VALUES ('1', N'Admin')
+INSERT INTO Permission VALUES ('2', N'Employee')
 
 INSERT INTO Employees VALUES ('employee1', N'Quản trị viên - Boss', N'Không có', '0356895642', 'admin@lms.edu.vn', '1', 'admin', '123456')
 INSERT INTO Reader VALUES ('reader1', N'Cảnh Cảnh', '0986523521', 'reader1', '123456')
@@ -150,3 +151,11 @@ INSERT INTO Books VALUES ('book2', N'Clean Code: A Handbook of Agile Software Cr
 
 INSERT INTO Books VALUES ('book3', N'Da Vinci code', N'Dan Brown', 'cat2', 'pub1', 5, 'Simbolog Robert Langdon menerima telepon misterius yang mengundangnya ke Museum Louvre Paris pada tengah malam.')
 
+SELECT Issue.IssueID, Issue.ReaderID, Reader.ReaderName, Reader.PhoneNumber, Issue.EmployeeID, Employees.Emp_name, Employees.Address, Employees.PhoneNumber, Employees.Email, Employees.PerID, Issue.IssueDate, Issue.DueDate, Issue.ReturnDate, Issue.TotalFine, Issue.Status FROM Issue INNER JOIN Employees ON Issue.EmployeeID = Employees.EmployeeID INNER JOIN Reader ON Issue.ReaderID = Reader.ReaderID WHERE Issue.Status = 1
+
+select * from Issue
+select * from Issue_detail
+
+insert into Fine Values ('2', N'Cong, nhàu sách', '', 10000)
+insert into Fine Values ('3', N'Rách giấy', '', 20000)
+insert into Fine Values ('4', N'Mất sách', '', 500000)

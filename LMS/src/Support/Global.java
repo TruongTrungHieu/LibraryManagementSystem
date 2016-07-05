@@ -36,9 +36,19 @@ public class Global {
     /**
      *  Đang mượn
      */
-    public static final int ISSUE_STATUS_PENDING = 1;
+    public static final int ISSUE_STATUS_BORROWING = 1;
     /**
      *  Đã trả
      */
     public static final int ISSUE_STATUS_DONE = 2;
+    
+    /**
+     * Permission Admin
+     */
+    public static final String PERMISSION_ADMIN = "1";
+
+    /**
+     *  Permission Employee
+     */
+    public static final String PERMISSION_EMPLOYEE = "2";
 }

@@ -213,7 +213,8 @@ public class Loginform extends javax.swing.JFrame {
                     if (exeQ.loginEmployee(username, pass)) {
 //                        new MainFrame1().setVisible(true);
 //new AddEmployee().setVisible(true);
-                        new Manager_Issue().setVisible(true);
+                       // new Manager_Issue().setVisible(true);
+                       new MainFrameVer2().setVisible(true);
 
                         this.dispose();
                     } else {

@@ -17,6 +17,7 @@ public class DatetimeUtils {
 
     public static final String DATE_FORMAT_SQL = "yyyy-MM-dd hh:mm:ss";
     public static final String DATE_FORMAT_2 = "dd/MM/yyyy";
+    public static final String DATE_FORMAT_ISSUE = "dd/MM/yyyy hh:mm";
 
     public static String convertDateToString(Date date, String format) {
         if (date != null) {
