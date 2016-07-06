@@ -6,6 +6,7 @@
 package AbstractTable;
 
 import Objects.Fine;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,11 +52,7 @@ public class FineCellEditor extends AbstractCellEditor
         comboFine.setSelectedItem(fine);
         comboFine.addActionListener(this);
 
-        if (isSelected) {
-            comboFine.setBackground(table.getSelectionBackground());
-        } else {
-            comboFine.setBackground(table.getSelectionForeground());
-        }
+        comboFine.setBackground(Color.WHITE);
 
         return comboFine;
     }

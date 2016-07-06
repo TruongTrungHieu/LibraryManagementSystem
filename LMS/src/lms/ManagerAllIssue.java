@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author ELC-17
+ * @author 
  */
 public class ManagerAllIssue extends javax.swing.JFrame {
     
@@ -251,7 +251,8 @@ public class ManagerAllIssue extends javax.swing.JFrame {
         if (issueChoose.getIssueID().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Choose issue !");
         } else {
-            new GiveBookBack(issueChoose).setVisible(true);
+            GiveBookBack_NotFrame g = new GiveBookBack_NotFrame();
+            g.setIssue(issueChoose);
         }
     }//GEN-LAST:event_btn_trasachActionPerformed
 

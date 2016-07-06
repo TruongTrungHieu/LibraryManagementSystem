@@ -56,7 +56,7 @@ public class GiveBookBackTableModel extends AbstractTableModel {
                 issueDetail.setNumber((int) value);
                 break;
             case 3:
-                issueDetail.getFine().setFineName((String) value);
+                issueDetail.setFine((Fine) value);
                 break;
         }
     }
@@ -77,7 +77,7 @@ public class GiveBookBackTableModel extends AbstractTableModel {
                 returnValue = issueDetail.getNumber();
                 break;
             case 3:
-                returnValue = issueDetail.getFine().getFineName();
+                returnValue = issueDetail.getFine();
                 break;
         }
 

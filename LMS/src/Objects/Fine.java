@@ -12,11 +12,8 @@ package Objects;
 public class Fine {
 
     /**
-     * 1 - Bình thường
-     * 2 - ...
-     * 3 - ...
+     * 1 - Bình thường 2 - ... 3 - ...
      */
-    
     private String FineID;
     private String FineName;
     private String Description;
@@ -63,6 +60,11 @@ public class Fine {
 
     public void setDescription(String Description) {
         this.Description = Description;
+    }
+
+    @Override
+    public String toString() {
+        return this.FineName;
     }
 
 }
