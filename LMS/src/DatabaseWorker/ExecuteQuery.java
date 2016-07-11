@@ -62,10 +62,10 @@ public class ExecuteQuery {
      */
     public ArrayList<Books> getAllBooks() {
         ArrayList<Books> listBook = new ArrayList<>();
-        String sel_all_book = "SELECT BookID, Title, AuthorName, Books.CategoryID, Categories.CateName, Books.PublisherID, Publishers.PubName, Numberofcopies, [Description] "
+        String sel_all_book = "SELECT BookID, Title, AuthorName, Books.CategoryID, Categories.CateName, Books.PublisherID, Publishers.PubName, Numberofcopies, [Description],Books.StatusDel "
                 + "FROM Books INNER JOIN Categories ON Books.CategoryID = Categories.CateID "
                 + "INNER JOIN Publishers ON Books.PublisherID = Publishers.PubID "
-                + "ORDER BY Title";
+                + "Where Books.StatusDel = 0 ORDER BY Title";
         try {
             ResultSet rs = _statement.executeQuery(sel_all_book);
             if (rs.first()) {
@@ -133,6 +133,17 @@ public class ExecuteQuery {
         }
     }
 
+    public boolean deleteBook(Books book) {
+        String upd_book = "UPDATE Books SET StatusDel = 1 WHERE BookID = '" + book.getBookID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_book);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updateBook:" + e.getMessage());
+            return false;
+        }
+    }
+
     /**
      * Categories
      */
@@ -142,9 +153,9 @@ public class ExecuteQuery {
      * @return
      */
     public boolean insertCate(Categories cate) {
-        String ins_reader = "INSERT INTO Categories VALUES ('" + cate.getCateID() + "', N'" + cate.getCateName() + "')";
+        String ins_cate = "INSERT INTO Categories VALUES ('" + cate.getCateID() + "', N'" + cate.getCateName() + "')";
         try {
-            int row_affected = _statement.executeUpdate(ins_reader);
+            int row_affected = _statement.executeUpdate(ins_cate);
             return row_affected != 0;
         } catch (Exception e) {
             System.out.println("insertCate:" + e.getMessage());
@@ -152,9 +163,31 @@ public class ExecuteQuery {
         }
     }
 
+    public boolean updateCate(Categories cate) {
+        String upd_cate = "UPDATE Categories SET CateName = N'" + cate.getCateName() + "' WHERE CateID = '" + cate.getCateID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_cate);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updateCate:" + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteCate(Categories cate) {
+        String upd_cate = "UPDATE Categories SET StatusDel = 1 WHERE CateID = '" + cate.getCateID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_cate);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("deleteCate:" + e.getMessage());
+            return false;
+        }
+    }
+
     public ArrayList<Categories> getAllCategories() {
         ArrayList<Categories> listCategory = new ArrayList<>();
-        String sel_all_category = "SELECT CateID, CateName FROM Categories";
+        String sel_all_category = "SELECT CateID, CateName FROM Categories Where StatusDel = 0 Order by CateName";
         try {
             ResultSet rs = _statement.executeQuery(sel_all_category);
             if (rs.first()) {
@@ -222,6 +255,64 @@ public class ExecuteQuery {
             return row_affected != 0;
         } catch (Exception e) {
             System.out.println("insertBook:" + e.getMessage());
+            return false;
+        }
+    }
+
+    public ArrayList<Employees> getAllEmployee() {
+        ArrayList<Employees> listEmployee = new ArrayList<>();
+        String sel_all_employee = "Select EmployeeID, Emp_Name, Address, PhoneNumber, Email, Employees.PerID, Permission.PerName,Username "
+                + " from Employees inner join Permission "
+                + " ON Employees.PerID = Permission.PerID Where Employees.StatusDel = 0 ";
+        try {
+            ResultSet rs = _statement.executeQuery(sel_all_employee);
+            if (rs.first()) {
+                do {
+                    Employees employee = new Employees();
+
+                    employee.setEmployeeID(rs.getString(1));
+                    employee.setEmployeeName(rs.getString(2));
+                    employee.setAddress(rs.getString(3));
+                    employee.setPhoneNumber(rs.getString(4));
+                    employee.setEmail(rs.getString(5));
+
+                    Permission per = new Permission();
+                    per.setPermissionID(rs.getString(6));
+                    per.setPermissionName(rs.getString(7));
+                    employee.setPermission(per);
+
+                    employee.setUsername(rs.getString(8));
+
+                    listEmployee.add(employee);
+                } while (rs.next());
+            }
+            return listEmployee;
+        } catch (Exception e) {
+            System.out.println("getallEmployee:" + e.getMessage());
+            return null;
+        }
+    }
+
+    public boolean updateEmployee(Employees employee) {
+        String upd_employee = "UPDATE Employees SET Emp_Name = N'" + employee.getEmployeeName() + "', Address = N'" + employee.getAddress() + "', PhoneNumber = '" + employee.getPhoneNumber() + "', Email = '" + employee.getEmail() + "', PerID = '" + employee.getPermission().getPermissionID() + "', Username = '" + employee.getUsername() + "' WHERE EmployeeID = '" + employee.getEmployeeID() + "'";
+        System.out.println(upd_employee);
+        try {
+            int row_affected = _statement.executeUpdate(upd_employee);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updateEmployee:" + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteEmployee(Employees employee) {
+        String del_employee = "UPDATE Employees SET StatusDel = 1 WHERE EmployeeID = '" + employee.getEmployeeID() + "'";
+        System.out.println(del_employee);
+        try {
+            int row_affected = _statement.executeUpdate(del_employee);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updateEmployee:" + e.getMessage());
             return false;
         }
     }
@@ -364,10 +455,34 @@ public class ExecuteQuery {
         }
     }
 
+    public boolean returnBooks(Issue issue, ArrayList<IssueDetail> listDetails) {
+        String upd_issue_return_day = "UPDATE Issue SET Status = " + issue.getStatus() + ", ReturnDate = '" + DatetimeUtils.convertDateToString(issue.getReturnDate(), DatetimeUtils.DATE_FORMAT_SQL) + "', TotalFine = " + issue.getTotalFine() + " WHERE IssueID = '" + issue.getIssueID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_issue_return_day);
+            if (row_affected != 0) {
+                listDetails.stream().forEach((d) -> {
+                    String upd_issue_detail_fine = "UPDATE Issue_detail SET FineID = '" + d.getFine().getFineID() + "' WHERE IssueID = '" +d.getIssue().getIssueID()+ "' AND BookID = '" + d.getBook().getBookID()+ "'";
+                    try {
+                        _statement.executeUpdate(upd_issue_detail_fine);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ExecuteQuery.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("returnBooks:" + e.getMessage());
+            return false;
+        }
+    }
+
     /**
      * Issue Detail
+     *
      * @param issueID
-     * @return 
+     * @return
      */
     public ArrayList<IssueDetail> getAllIssueDetail(String issueID) {
         ArrayList<IssueDetail> list = new ArrayList<>();
@@ -405,6 +520,17 @@ public class ExecuteQuery {
         } catch (Exception e) {
             System.out.println("getAllIssue_status:" + e.getMessage());
             return null;
+        }
+    }
+
+    public boolean deleteIssuedetail(IssueDetail isdetail) {
+        String delete_issue = "Delete from Issue_detail where IssueID = '" + isdetail.getIssue().getIssueID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(delete_issue);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("deleteDetail:" + e.getMessage());
+            return false;
         }
     }
 
@@ -480,9 +606,31 @@ public class ExecuteQuery {
         }
     }
 
+    public boolean updatePub(Publishers pub) {
+        String upd_pub = "UPDATE Publishers SET PubName = N'" + pub.getPubName() + "' WHERE PubID = '" + pub.getPubID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_pub);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updatePub:" + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deletePub(Publishers pub) {
+        String upd_pub = "UPDATE Publishers SET StatusDel = 1 WHERE PubID = '" + pub.getPubID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_pub);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updatePub:" + e.getMessage());
+            return false;
+        }
+    }
+
     public ArrayList<Publishers> getAllPublisher() {
         ArrayList<Publishers> listPublisher = new ArrayList<>();
-        String sel_all_publishers = "SELECT PubID, PubName FROM Publishers";
+        String sel_all_publishers = "SELECT PubID, PubName FROM Publishers Where StatusDel = 0";
         try {
             ResultSet rs = _statement.executeQuery(sel_all_publishers);
             if (rs.first()) {
@@ -542,7 +690,7 @@ public class ExecuteQuery {
      */
     public ArrayList<Readers> getAllReaders() {
         ArrayList<Readers> listReader = new ArrayList<>();
-        String sel_all_reader = "SELECT ReaderID, ReaderName, PhoneNumber, UserName FROM Reader";
+        String sel_all_reader = "SELECT ReaderID, ReaderName, PhoneNumber, UserName, StatusDel FROM Reader where StatusDel = 0";
         try {
             ResultSet rs = _statement.executeQuery(sel_all_reader);
             if (rs.first()) {
@@ -571,7 +719,7 @@ public class ExecuteQuery {
      * @return
      */
     public boolean insertReader(Readers reader) {
-        String ins_reader = "INSERT INTO Reader VALUES ('" + reader.getReaderID() + "', '" + reader.getReaderName() + "', '" + reader.getPhoneNumber() + "', '" + reader.getUserName() + "', '" + reader.getUserName() + "')";
+        String ins_reader = "INSERT INTO Reader VALUES ('" + reader.getReaderID() + "', '" + reader.getReaderName() + "', '" + reader.getPhoneNumber() + "', '" + reader.getUserName() + "','123456','0')";
         try {
             int row_affected = _statement.executeUpdate(ins_reader);
             return row_affected != 0;
@@ -580,4 +728,27 @@ public class ExecuteQuery {
             return false;
         }
     }
+
+    public boolean updateReader(Readers reader) {
+        String upd_reader = "UPDATE Reader SET ReaderName = N'" + reader.getReaderName() + "', PhoneNumber = N'" + reader.getPhoneNumber() + "', UserName = '" + reader.getUserName() + "' WHERE ReaderID = '" + reader.getReaderID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(upd_reader);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updateReder:" + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteReader(Readers reader) {
+        String delete_reader = "UPDATE Reader SET StatusDel = 1 WHERE ReaderID = '" + reader.getReaderID() + "'";
+        try {
+            int row_affected = _statement.executeUpdate(delete_reader);
+            return row_affected != 0;
+        } catch (Exception e) {
+            System.out.println("updateReder:" + e.getMessage());
+            return false;
+        }
+    }
+
 }

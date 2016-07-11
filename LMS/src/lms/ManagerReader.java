@@ -5,9 +5,17 @@
  */
 package lms;
 
+import DatabaseWorker.ExecuteQuery;
+import Objects.Employees;
+import Objects.Readers;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,14 +23,21 @@ import javax.swing.JFrame;
  */
 public class ManagerReader extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ManagerReader
-     */
+   
+    private Readers reader;
+    private ExecuteQuery exeQ;
+    private ArrayList<Readers> listreader;
+    
+    private DefaultTableModel model;
+    private Readers ReaderUpdate;
+    
     public ManagerReader() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((ds.width - this.getWidth()) / 2, (ds.height - this.getHeight()) / 2);
+        initData();
+        loadView();
     }
 
     /**
@@ -34,21 +49,256 @@ public class ManagerReader extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tf_readername = new javax.swing.JTextField();
+        tf_phone = new javax.swing.JTextField();
+        tf_username = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_readers = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btn_add = new javax.swing.JButton();
+        btn_refresh = new javax.swing.JButton();
+        btn_update = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        btn_del = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tf_phone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_phoneActionPerformed(evt);
+            }
+        });
+
+        tf_username.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_usernameActionPerformed(evt);
+            }
+        });
+
+        tbl_readers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ReaderName", "PhoneNumber", "Username"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_readers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_readersMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_readers);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Reader's Name");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Phone Number");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Username");
+
+        btn_add.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_add.setForeground(new java.awt.Color(51, 51, 255));
+        btn_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/EDIT_ADD.PNG"))); // NOI18N
+        btn_add.setText("Add");
+        btn_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_addActionPerformed(evt);
+            }
+        });
+
+        btn_refresh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_refresh.setForeground(new java.awt.Color(51, 51, 255));
+        btn_refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reload_32.png"))); // NOI18N
+        btn_refresh.setText("Refresh");
+
+        btn_update.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_update.setForeground(new java.awt.Color(51, 51, 255));
+        btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/package_editors.png"))); // NOI18N
+        btn_update.setText("Update");
+        btn_update.setEnabled(false);
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel4.setText("Manage Reader");
+
+        btn_del.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_del.setForeground(new java.awt.Color(51, 51, 255));
+        btn_del.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Delete.png"))); // NOI18N
+        btn_del.setText("Xóa");
+        btn_del.setEnabled(false);
+        btn_del.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_delActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tf_readername, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tf_phone, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(tf_username, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_del, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_refresh)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_readername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_del, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tf_phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_phoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_phoneActionPerformed
+
+    private void tf_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_usernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_usernameActionPerformed
+
+    private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
+        if (checkValidate()) {
+            if (exeQ.insertReader(reader)) {
+                
+                JOptionPane.showMessageDialog(this, reader.getReaderName()+ " inserted successful !");
+                listreader.add(reader);
+
+                model.setRowCount(0);
+                
+                listreader.stream().forEach((b) -> {
+                    model.addRow(new Object[]{b.getReaderName(), b.getPhoneNumber(), b.getUserName()});
+                });
+                tbl_readers = new JTable(model);
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(this, "Something wrong, please try again !");
+            }
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_addActionPerformed
+
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+       if (checkValidateUpdate()) {
+            if (exeQ.updateReader(ReaderUpdate)) {
+                JOptionPane.showMessageDialog(this, ReaderUpdate.getReaderName()+ " updated successfully !");
+
+                listreader = new ArrayList<>();
+                listreader = exeQ.getAllReaders();
+                DefaultTableModel model1;
+                model1 = (DefaultTableModel) this.tbl_readers.getModel();
+                model1.setRowCount(0);
+                listreader.stream().forEach((b) -> {
+                    model1.addRow(new Object[]{b.getReaderName(), b.getPhoneNumber(), b.getUserName()});
+                });
+                tbl_readers = new JTable(model1);
+                
+                refresh();
+            }
+        }
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void tbl_readersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_readersMouseClicked
+        int row = tbl_readers.rowAtPoint(evt.getPoint());
+        int col = tbl_readers.columnAtPoint(evt.getPoint());
+        if (row >= 0 && col >= 0) {
+            btn_update.setEnabled(true);
+            btn_del.setEnabled(true);
+            ReaderUpdate = listreader.get(row);
+
+            tf_readername.setText(ReaderUpdate.getReaderName());
+            tf_phone.setText(ReaderUpdate.getPhoneNumber());
+            tf_username.setText(ReaderUpdate.getUserName());
+     
+
+        }
+    }//GEN-LAST:event_tbl_readersMouseClicked
+
+    private void btn_delActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_delActionPerformed
+        if (checkValidateUpdate()) {
+            if (exeQ.deleteReader(ReaderUpdate)) {
+                JOptionPane.showMessageDialog(this, ReaderUpdate.getReaderName()+ " deleted successfully !");
+
+                listreader = new ArrayList<>();
+                listreader = exeQ.getAllReaders();
+                DefaultTableModel model1;
+                model1 = (DefaultTableModel) this.tbl_readers.getModel();
+                model1.setRowCount(0);
+                listreader.stream().forEach((b) -> {
+                    model1.addRow(new Object[]{b.getReaderName(), b.getPhoneNumber(), b.getUserName()});
+                });
+                tbl_readers = new JTable(model1);
+                
+                refresh();
+            }
+        }
+    }//GEN-LAST:event_btn_delActionPerformed
 
     /**
      * @param args the command line arguments
@@ -86,5 +336,102 @@ public class ManagerReader extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_add;
+    private javax.swing.JButton btn_del;
+    private javax.swing.JButton btn_refresh;
+    private javax.swing.JButton btn_update;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbl_readers;
+    private javax.swing.JTextField tf_phone;
+    private javax.swing.JTextField tf_readername;
+    private javax.swing.JTextField tf_username;
     // End of variables declaration//GEN-END:variables
+
+    private void initData() {
+        exeQ = ExecuteQuery.getInstance();
+
+        listreader = new ArrayList<>();
+        listreader = exeQ.getAllReaders();
+
+        model = (DefaultTableModel) this.tbl_readers.getModel();    
+    }
+
+    private void loadView() {
+        if (listreader != null) {
+            DefaultTableModel model;
+            model = (DefaultTableModel) this.tbl_readers.getModel();
+            model.setRowCount(0);
+            listreader.stream().forEach((b) -> {
+                model.addRow(new Object[]{b.getReaderName(), b.getPhoneNumber(), b.getUserName()});
+            });
+            tbl_readers = new JTable(model);
+        }
+    }
+    
+    private void refresh() {
+        tf_username.setText("");
+        tf_readername.setText("");
+        tf_phone.setText("");      
+    }
+
+    private boolean checkValidate() {
+        reader = new Readers();
+        reader.setReaderID(Calendar.getInstance().getTimeInMillis() + "");
+
+        if (tf_readername.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name can't be empty !");
+            return false;
+        } else {
+            reader.setReaderName(tf_readername.getText().trim());
+        }
+
+        if (tf_phone.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Phone can't be empty !");
+            return false;
+        } else {
+            reader.setPhoneNumber(tf_phone.getText().trim());
+        }
+
+        if (tf_username.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username can't be empty !");
+            return false;
+        } else {
+            reader.setUserName(tf_username.getText().trim());
+        }
+        return true;
+    }
+    
+    private boolean checkValidateUpdate() {
+
+        if (ReaderUpdate.getReaderID().isEmpty()) {
+            return false;
+        }
+        
+        if (tf_readername.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name can't be empty !");
+            return false;
+        } else {
+            ReaderUpdate.setReaderName(tf_readername.getText().trim());
+        }
+
+        if (tf_phone.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Phone can't be empty !");
+            return false;
+        } else {
+            ReaderUpdate.setPhoneNumber(tf_phone.getText().trim());
+        }
+
+        if (tf_username.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username can't be empty !");
+            return false;
+        } else {
+            ReaderUpdate.setUserName(tf_username.getText().trim());
+        }
+
+        return true;
+    }
 }

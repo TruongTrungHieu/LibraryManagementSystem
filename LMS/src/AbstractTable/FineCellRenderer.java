@@ -25,11 +25,8 @@ public class FineCellRenderer extends DefaultTableCellRenderer {
             setText(fine.getFineName());
         }
 
-        if (isSelected) {
-            setBackground(table.getSelectionBackground());
-        } else {
-            setBackground(table.getSelectionForeground());
-        }
+        setForeground(table.getForeground());
+        setBackground(table.getBackground());
 
         return this;
     }

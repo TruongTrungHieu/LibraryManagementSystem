@@ -11,6 +11,7 @@ import Objects.Publishers;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -25,6 +26,8 @@ public class ManagerPublisher extends javax.swing.JFrame {
     private Publishers pub;
     private ArrayList<Publishers> listPublisher;
     private ExecuteQuery exeQ;
+    private DefaultTableModel model;
+    private Publishers pubUpdate;
     
     public ManagerPublisher() {
         initComponents();
@@ -36,7 +39,6 @@ public class ManagerPublisher extends javax.swing.JFrame {
     }
     
       private void refresh() {
-        tf_pubID.setText("");
         tf_pubName.setText("");
         
     }
@@ -44,13 +46,9 @@ public class ManagerPublisher extends javax.swing.JFrame {
       private boolean checkValidate() {
         pub = new Publishers();
         
+        pub.setPubID(Calendar.getInstance().getTimeInMillis() + "");
 
-        if (tf_pubID.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "ID can't be empty !");
-            return false;
-        } else {
-            pub.setPubID(tf_pubID.getText().trim());
-        }
+   
         
         if (tf_pubName.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Name can't be empty !");
@@ -59,9 +57,18 @@ public class ManagerPublisher extends javax.swing.JFrame {
             pub.setPubName(tf_pubName.getText().trim());
         }
         
-        
         return true;
       }
+      
+       private boolean checkValidateUpdate() {
+        if (tf_pubName.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "PubName can't be empty !");
+            return false;
+        } else {
+            pubUpdate.setPubName(tf_pubName.getText().trim());
+        }
+        return true;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,37 +79,47 @@ public class ManagerPublisher extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPasswordField1 = new javax.swing.JPasswordField();
         tf_pubName = new javax.swing.JTextField();
-        tf_pubID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_pub = new javax.swing.JTable();
         btn_add = new javax.swing.JButton();
         btn_refresh = new javax.swing.JButton();
+        btn_edit = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btn_del = new javax.swing.JButton();
+
+        jPasswordField1.setText("jPasswordField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        tf_pubName.setText("PubName");
-
-        tf_pubID.setText("PubID");
 
         tbl_pub.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "PubID", "PubName"
+                "PubName"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tbl_pub.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_pubMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_pub);
 
+        btn_add.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_add.setForeground(new java.awt.Color(51, 51, 255));
+        btn_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/EDIT_ADD.PNG"))); // NOI18N
         btn_add.setText("Add");
         btn_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,41 +127,81 @@ public class ManagerPublisher extends javax.swing.JFrame {
             }
         });
 
+        btn_refresh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_refresh.setForeground(new java.awt.Color(0, 0, 255));
+        btn_refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reload_32.png"))); // NOI18N
         btn_refresh.setText("Refresh");
+
+        btn_edit.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_edit.setForeground(new java.awt.Color(51, 51, 255));
+        btn_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/package_editors.png"))); // NOI18N
+        btn_edit.setText("Update");
+        btn_edit.setEnabled(false);
+        btn_edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel1.setText("Manage Publisher");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Publisher's Name");
+
+        btn_del.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_del.setForeground(new java.awt.Color(51, 51, 255));
+        btn_del.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Delete.png"))); // NOI18N
+        btn_del.setText("Xóa");
+        btn_del.setEnabled(false);
+        btn_del.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_delActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(56, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(tf_pubID, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tf_pubName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(54, 54, 54))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(btn_del, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btn_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btn_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                        .addComponent(tf_pubName)
+                        .addComponent(jLabel1)))
+                .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tf_pubName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tf_pubID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(7, 7, 7)
+                .addComponent(tf_pubName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_add, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(btn_refresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(15, 15, 15))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_del, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -154,12 +211,68 @@ public class ManagerPublisher extends javax.swing.JFrame {
         if (checkValidate()) {
             if (exeQ.insertPub(pub)) {
                 JOptionPane.showMessageDialog(this, pub.getPubName()+ " inserted successful !");
+                listPublisher.add(pub);
+                model.setRowCount(0);
+                listPublisher.stream().forEach((b) -> {
+                    model.addRow(new Object[]{b.getPubName()});
+                });
                 tbl_pub = new JTable();
                 refresh();
             } else {
                 JOptionPane.showMessageDialog(this, "Something wrong, please try again !");
             }
         }    }//GEN-LAST:event_btn_addActionPerformed
+
+    private void tbl_pubMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_pubMouseClicked
+        int row = tbl_pub.rowAtPoint(evt.getPoint());
+        int col = tbl_pub.columnAtPoint(evt.getPoint());
+        if (row >= 0 && col >= 0) {
+            btn_edit.setEnabled(true);
+            btn_del.setEnabled(true);
+            pubUpdate = listPublisher.get(row);
+            tf_pubName.setText(pubUpdate.getPubName());
+        }
+    }//GEN-LAST:event_tbl_pubMouseClicked
+
+    private void btn_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editActionPerformed
+        if (checkValidateUpdate()) {
+            if (exeQ.updatePub(pubUpdate)) {
+                JOptionPane.showMessageDialog(this, pubUpdate.getPubName()+ " updated successfully !");
+
+                listPublisher = new ArrayList<>();
+                listPublisher = exeQ.getAllPublisher();
+                DefaultTableModel model1;
+                model1 = (DefaultTableModel) this.tbl_pub.getModel();
+                model1.setRowCount(0);
+                listPublisher.stream().forEach((b) -> {
+                    model1.addRow(new Object[]{b.getPubName()});
+                });
+                tbl_pub = new JTable(model1);
+
+                refresh();
+            }
+        }
+    }//GEN-LAST:event_btn_editActionPerformed
+
+    private void btn_delActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_delActionPerformed
+        if (checkValidateUpdate()) {
+            if (exeQ.deletePub(pubUpdate)) {
+                JOptionPane.showMessageDialog(this, pubUpdate.getPubName()+ " deleted successfully !");
+
+                listPublisher = new ArrayList<>();
+                listPublisher = exeQ.getAllPublisher();
+                DefaultTableModel model1;
+                model1 = (DefaultTableModel) this.tbl_pub.getModel();
+                model1.setRowCount(0);
+                listPublisher.stream().forEach((b) -> {
+                    model1.addRow(new Object[]{b.getPubName()});
+                });
+                tbl_pub = new JTable(model1);
+
+                refresh();
+            }
+        }
+    }//GEN-LAST:event_btn_delActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,10 +311,14 @@ public class ManagerPublisher extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;
+    private javax.swing.JButton btn_del;
+    private javax.swing.JButton btn_edit;
     private javax.swing.JButton btn_refresh;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_pub;
-    private javax.swing.JTextField tf_pubID;
     private javax.swing.JTextField tf_pubName;
     // End of variables declaration//GEN-END:variables
 
@@ -209,14 +326,17 @@ public class ManagerPublisher extends javax.swing.JFrame {
         exeQ = ExecuteQuery.getInstance();
 
         listPublisher = new ArrayList<>();
-        listPublisher = exeQ.getAllPublisher();    }
+        listPublisher = exeQ.getAllPublisher(); 
+        
+        model = (DefaultTableModel) this.tbl_pub.getModel();
+    }
 
     private void loadView() {
         if (listPublisher != null) {
             DefaultTableModel model;
             model = (DefaultTableModel) this.tbl_pub.getModel();
             listPublisher.stream().forEach((c) -> {
-                model.addRow(new Object[]{c.getPubID(), c.getPubName()});
+                model.addRow(new Object[]{c.getPubName()});
             });
             tbl_pub = new JTable(model);
         }    

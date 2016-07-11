@@ -26,8 +26,10 @@ import javax.swing.table.DefaultTableModel;
 public class ManageCategory extends javax.swing.JFrame {
 
     private Categories cate;
+    private Categories cateUpdate;
     private ArrayList<Categories> listCate;
     private ExecuteQuery exeQ;
+    private DefaultTableModel model;
 
     /**
      * Creates new form ManageCategory
@@ -40,34 +42,37 @@ public class ManageCategory extends javax.swing.JFrame {
         initData();
         loadView();
     }
-    
-     private void refresh() {
-        tf_cateid.setText("");
-        tf_cateName.setText("");
-        
-    }
-     
-      private boolean checkValidate() {
-        cate = new Categories();
-        
 
-        if (tf_cateid.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "ID can't be empty !");
-            return false;
-        } else {
-            cate.setCateID(tf_cateid.getText().trim());
-        }
-        
+    private void refresh() {
+
+        tf_cateName.setText("");
+
+    }
+
+    private boolean checkValidate() {
+        cate = new Categories();
+        cate.setCateID(Calendar.getInstance().getTimeInMillis() + "");
+
         if (tf_cateName.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Name can't be empty !");
             return false;
         } else {
             cate.setCateName(tf_cateName.getText().trim());
         }
-        
-        
+
         return true;
-      }
+    }
+
+    private boolean checkValidateUpdate() {
+        if (tf_cateName.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "CateName can't be empty !");
+            return false;
+        } else {
+            cateUpdate.setCateName(tf_cateName.getText().trim());
+        }
+        return true;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,44 +83,46 @@ public class ManageCategory extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        tf_cateid = new javax.swing.JTextField();
         tf_cateName = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_cate = new javax.swing.JTable();
         bt_add = new javax.swing.JButton();
         bt_edit = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        btn_delete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("MANAGER CATELOGY");
-
-        tf_cateid.setText("CatelogyID");
-        tf_cateid.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_cateidActionPerformed(evt);
-            }
-        });
-
-        tf_cateName.setText("Catelogy Name");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel1.setText("MANAGER CATEGORY");
 
         tbl_cate.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CateID", "Cate Name"
+                "Cate Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tbl_cate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_cateMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_cate);
 
+        bt_add.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        bt_add.setForeground(new java.awt.Color(51, 51, 255));
+        bt_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/EDIT_ADD.PNG"))); // NOI18N
         bt_add.setText("Add");
         bt_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,7 +130,30 @@ public class ManageCategory extends javax.swing.JFrame {
             }
         });
 
-        bt_edit.setText("Edit");
+        bt_edit.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        bt_edit.setForeground(new java.awt.Color(51, 51, 255));
+        bt_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/package_editors.png"))); // NOI18N
+        bt_edit.setText("Update");
+        bt_edit.setEnabled(false);
+        bt_edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_editActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Category Name");
+
+        btn_delete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_delete.setForeground(new java.awt.Color(51, 51, 255));
+        btn_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Delete.png"))); // NOI18N
+        btn_delete.setText("Xóa");
+        btn_delete.setEnabled(false);
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,58 +164,115 @@ public class ManageCategory extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(tf_cateid, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(61, 61, 61)
-                                .addComponent(tf_cateName, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bt_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bt_add, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(tf_cateName, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(20, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(bt_add, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(bt_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
+                .addGap(23, 23, 23)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tf_cateid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tf_cateName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addComponent(tf_cateName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bt_add, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bt_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(bt_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_edit)
+                    .addComponent(btn_delete))
+                .addGap(28, 28, 28))
         );
+
+        jLabel1.getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tf_cateidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cateidActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tf_cateidActionPerformed
-
     private void bt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addActionPerformed
-         if (checkValidate()) {
+        if (checkValidate()) {
             if (exeQ.insertCate(cate)) {
-                JOptionPane.showMessageDialog(this, cate.getCateName()+ " inserted successful !");
-                tbl_cate = new JTable();
+                JOptionPane.showMessageDialog(this, cate.getCateName() + " inserted successful !");
+                listCate.add(cate);
+                model.setRowCount(0);
+                listCate.stream().forEach((b) -> {
+                    model.addRow(new Object[]{b.getCateName()});
+                });
+
+                tbl_cate = new JTable(model);
                 refresh();
             } else {
                 JOptionPane.showMessageDialog(this, "Something wrong, please try again !");
             }
         }
     }//GEN-LAST:event_bt_addActionPerformed
+
+    private void tbl_cateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_cateMouseClicked
+        int row = tbl_cate.rowAtPoint(evt.getPoint());
+        int col = tbl_cate.columnAtPoint(evt.getPoint());
+        if (row >= 0 && col >= 0) {
+            bt_edit.setEnabled(true);
+            btn_delete.setEnabled(true);
+            cateUpdate = listCate.get(row);
+            tf_cateName.setText(cateUpdate.getCateName());
+        }
+    }//GEN-LAST:event_tbl_cateMouseClicked
+
+    private void bt_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editActionPerformed
+        if (checkValidateUpdate()) {
+            if (exeQ.updateCate(cateUpdate)) {
+                JOptionPane.showMessageDialog(this, cateUpdate.getCateName() + " updated successfully !");
+
+                listCate = new ArrayList<>();
+                listCate = exeQ.getAllCategories();
+                DefaultTableModel model1;
+                model1 = (DefaultTableModel) this.tbl_cate.getModel();
+                model1.setRowCount(0);
+                listCate.stream().forEach((b) -> {
+                    model1.addRow(new Object[]{b.getCateName()});
+                });
+                tbl_cate = new JTable(model1);
+
+                refresh();
+            }
+        }
+    }//GEN-LAST:event_bt_editActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        if (checkValidateUpdate()) {
+            if (exeQ.deleteCate(cateUpdate)) {
+                JOptionPane.showMessageDialog(this, cateUpdate.getCateName() + " deleted successfully !");
+
+                listCate = new ArrayList<>();
+                listCate = exeQ.getAllCategories();
+                DefaultTableModel model1;
+                model1 = (DefaultTableModel) this.tbl_cate.getModel();
+                model1.setRowCount(0);
+                listCate.stream().forEach((b) -> {
+                    model1.addRow(new Object[]{b.getCateName()});
+                });
+                tbl_cate = new JTable(model1);
+
+                refresh();
+            }
+        }
+    }//GEN-LAST:event_btn_deleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -201,31 +288,30 @@ public class ManageCategory extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_add;
     private javax.swing.JButton bt_edit;
+    private javax.swing.JButton btn_delete;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_cate;
     private javax.swing.JTextField tf_cateName;
-    private javax.swing.JTextField tf_cateid;
     // End of variables declaration//GEN-END:variables
-
 
     private void initData() {
         exeQ = ExecuteQuery.getInstance();
 
         listCate = new ArrayList<>();
         listCate = exeQ.getAllCategories();
-        
+
+        model = (DefaultTableModel) this.tbl_cate.getModel();
     }
 
     private void loadView() {
         if (listCate != null) {
-            DefaultTableModel model;
-            model = (DefaultTableModel) this.tbl_cate.getModel();
             listCate.stream().forEach((c) -> {
-                model.addRow(new Object[]{c.getCateID(), c.getCateName()});
+                model.addRow(new Object[]{c.getCateName()});
             });
             tbl_cate = new JTable(model);
-        }    
+        }
     }
 
 }

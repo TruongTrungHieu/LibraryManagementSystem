@@ -16,23 +16,20 @@ import Support.DatetimeUtils;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Label;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -76,7 +73,8 @@ public class GiveBookBack_NotFrame extends JFrame {
             lb_phonenumber.setText(issue.getReader().getPhoneNumber());
             lb_duedate.setText(DatetimeUtils.convertDateToString(issue.getDueDate(), DatetimeUtils.DATE_FORMAT_ISSUE));
             lb_issuedate.setText(DatetimeUtils.convertDateToString(issue.getIssueDate(), DatetimeUtils.DATE_FORMAT_ISSUE));
-            lb_returndate.setText(DatetimeUtils.convertDateToString(new Date(), DatetimeUtils.DATE_FORMAT_ISSUE));
+            issue.setReturnDate(new Date());
+            lb_returndate.setText(DatetimeUtils.convertDateToString(issue.getReturnDate(), DatetimeUtils.DATE_FORMAT_ISSUE));
         }
 
         JPanel panel = new JPanel();
@@ -93,6 +91,17 @@ public class GiveBookBack_NotFrame extends JFrame {
         table.setDefaultRenderer(Fine.class, new FineCellRenderer());
         table.setDefaultEditor(Fine.class, new FineCellEditor(listFine));
         table.setRowHeight(25);
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = table.rowAtPoint(evt.getPoint());
+                int col = table.columnAtPoint(evt.getPoint());
+                if (row >= 0 && col >= 0) {
+                    Fine f = (Fine) tableModel.getValueAt(row, 3);
+                    listIssueDetails.get(row).setFine(f);
+                }
+            }
+        });
 
         JScrollPane scrollpane = new JScrollPane(table);
         scrollpane.setPreferredSize(new Dimension(400, 200));
@@ -102,7 +111,7 @@ public class GiveBookBack_NotFrame extends JFrame {
         btn_trasach.setText("Trả sách");
         btn_trasach.setAlignmentX(CENTER_ALIGNMENT);
         btn_trasach.addActionListener((ActionEvent e) -> {
-             System.out.println("" + listIssueDetails.get(0).getFine().getFineName());
+            coutFine();
         });
         panel.add(btn_trasach);
 
@@ -114,6 +123,24 @@ public class GiveBookBack_NotFrame extends JFrame {
         setVisible(true);
     }
 
+    private void coutFine() {
+        double sum_fine = 0;
+        if (listIssueDetails != null) {
+            for (IssueDetail id : listIssueDetails) {
+                sum_fine += id.getFine().getCost() * id.getNumber();
+            }
+        }
+        int dialogResult = JOptionPane.showConfirmDialog(null, "You must pay " + sum_fine + " for fee !", "Fine fee", JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            issue.setStatus(2);
+            issue.setTotalFine(sum_fine);
+            if (exeQ.returnBooks(issue, listIssueDetails)) {
+                JOptionPane.showMessageDialog(this, "Return books successfully !");
+                this.dispose();
+            }
+        }
+    }
+
     public GiveBookBack_NotFrame() {
         super();
     }
@@ -121,7 +148,7 @@ public class GiveBookBack_NotFrame extends JFrame {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
 

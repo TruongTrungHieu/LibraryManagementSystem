@@ -159,3 +159,5 @@ select * from Issue_detail
 insert into Fine Values ('2', N'Cong, nhàu sách', '', 10000)
 insert into Fine Values ('3', N'Rách giấy', '', 20000)
 insert into Fine Values ('4', N'Mất sách', '', 500000)
+
+update Issue set Status = 1 where IssueID = '1467617173390'

@@ -211,19 +211,15 @@ public class Loginform extends javax.swing.JFrame {
                 case type_user_admin:
                 case type_user_employee:
                     if (exeQ.loginEmployee(username, pass)) {
-//                        new MainFrame1().setVisible(true);
-//new AddEmployee().setVisible(true);
-                       // new Manager_Issue().setVisible(true);
                        new MainFrameVer2().setVisible(true);
-
-                        this.dispose();
+                       this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "The email and password you entered don't match.");
                     }
                     break;
                 case type_user_student:
                     if (exeQ.loginReader(username, pass)) {
-                        new Searchbook().setVisible(true);
+                        new SearchBookReader().setVisible(true);
                         this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "The email and password you entered don't match.");
@@ -246,7 +242,7 @@ public class Loginform extends javax.swing.JFrame {
                     case type_user_admin:
                     case type_user_employee:
                         if (exeQ.loginEmployee(username, pass)) {
-                            new SearchReader().setVisible(true);
+                            new MainFrameVer2().setVisible(true);
                             this.dispose();
                         } else {
                             JOptionPane.showMessageDialog(this, "The email and password you entered don't match.");
@@ -254,7 +250,7 @@ public class Loginform extends javax.swing.JFrame {
                         break;
                     case type_user_student:
                         if (exeQ.loginReader(username, pass)) {
-                            new FrameMain().setVisible(true);
+                            new SearchBookReader().setVisible(true);
                             this.dispose();
                         } else {
                             JOptionPane.showMessageDialog(this, "The email and password you entered don't match.");

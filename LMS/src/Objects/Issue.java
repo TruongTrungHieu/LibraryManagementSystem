@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author ELC-17
+ * @author 
  */
 public class Issue {
     private String IssueID;

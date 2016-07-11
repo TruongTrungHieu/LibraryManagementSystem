@@ -27,9 +27,9 @@ public class MainFrameVer2 extends javax.swing.JFrame {
     private void loadView() {
         db_UserName.setText(Global.Employee.getEmployeeName());
         if (Global.Employee.getPermission().getPermissionID().equals(Global.PERMISSION_ADMIN)) {
-            // view admin
+            jButton5.setVisible(true);
         } else {
-            // view employee
+            jButton5.setVisible(false);
         }
     }
 
@@ -204,7 +204,7 @@ public class MainFrameVer2 extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(388, Short.MAX_VALUE))
+                .addContainerGap(385, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab1", jPanel2);
@@ -242,14 +242,14 @@ public class MainFrameVer2 extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-//        new Loginform().setVisible(true);
-//        Global.Employee = new Employees();
-//        Global.Reader = new Readers();
-//        this.dispose();
+        new Loginform().setVisible(true);
+        Global.Employee = new Employees();
+        Global.Reader = new Readers();
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new ManagerEmployee().setVisible(true);
+       new AddEmployee1().setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

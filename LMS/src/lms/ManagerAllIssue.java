@@ -11,6 +11,8 @@ import Support.DatetimeUtils;
 import Support.Global;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -19,10 +21,10 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author 
+ * @author
  */
 public class ManagerAllIssue extends javax.swing.JFrame {
-    
+
     private ExecuteQuery exeQ;
     private ArrayList<Issue> listIssue;
     private Issue issueChoose;
@@ -33,24 +35,24 @@ public class ManagerAllIssue extends javax.swing.JFrame {
      */
     public ManagerAllIssue() {
         initComponents();
-        
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((ds.width - this.getWidth()) / 2, (ds.height - this.getHeight()) / 2);
-        
+
         initData();
         loadView();
     }
-    
+
     private void initData() {
         exeQ = ExecuteQuery.getInstance();
-        
+
         listIssue = new ArrayList<>();
         listIssue = exeQ.getAllIssue(Global.ISSUE_STATUS_BORROWING);
-        
+
         model = (DefaultTableModel) tb_issue.getModel();
     }
-    
+
     private void loadView() {
         if (listIssue != null) {
             listIssue.stream().forEach((i) -> {
@@ -268,6 +270,14 @@ public class ManagerAllIssue extends javax.swing.JFrame {
         lb_phonenumber.setText("");
         lb_readerName.setText("");
         issueChoose = new Issue();
+        
+        model.setRowCount(0);
+        if (listIssue != null) {
+            listIssue.stream().forEach((i) -> {
+                model.addRow(new Object[]{i.getReader().getReaderName(), i.getReader().getPhoneNumber(), DatetimeUtils.convertDateToString(i.getIssueDate(), DatetimeUtils.DATE_FORMAT_ISSUE), DatetimeUtils.convertDateToString(i.getDueDate(), DatetimeUtils.DATE_FORMAT_ISSUE)});
+            });
+            tb_issue = new JTable(model);
+        }
     }//GEN-LAST:event_btn_refreshActionPerformed
 
     private void tb_issueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_issueMouseClicked
@@ -277,7 +287,7 @@ public class ManagerAllIssue extends javax.swing.JFrame {
         if (row >= 0 && col >= 0) {
             btn_trasach.setEnabled(true);
             issueChoose = listIssue.get(row);
-            
+
             lb_readerName.setText(issueChoose.getReader().getReaderName());
             lb_phonenumber.setText(issueChoose.getReader().getPhoneNumber());
             lb_duedate.setText(DatetimeUtils.convertDateToString(issueChoose.getDueDate(), DatetimeUtils.DATE_FORMAT_ISSUE));
